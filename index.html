@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Feliz Cumpleaños Dayamara</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Montserrat:wght@300;400;700&display=swap');
+    
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Montserrat', sans-serif;
+      background: #000000; /* Fondo negro */
+      color: white;
+      min-height: 100vh;
+      /* Quitamos overflow: hidden para permitir desplazamiento */
+    }
+    
+    .flower-container {
+      position: fixed; /* Cambiado de absolute a fixed */
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none; /* Asegura que no interfiera con la interacción */
+    }
+    
+    .flower {
+      position: absolute;
+      pointer-events: none;
+    }
+    
+    .petal {
+      position: absolute;
+      border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+      transform-origin: bottom center;
+      filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.3));
+    }
+    
+    .center {
+      position: absolute;
+      background: radial-gradient(circle, #ffcc00, #ff9500);
+      border-radius: 50%;
+      box-shadow: 0 0 10px rgba(255, 204, 0, 0.5);
+    }
+    
+    .card {
+      position: relative; /* Cambiado de absolute a relative */
+      margin: 15vh auto 50px auto; /* Centrado con margen automático */
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      padding: 40px 20px; /* Ajustados los paddings */
+      max-width: 90%; /* Cambiado para mejor adaptación móvil */
+      width: 600px; /* Ancho máximo */
+      text-align: center;
+      z-index: 1;
+      box-shadow: 0 0 30px rgba(255, 255, 255, 0.2), 
+                 0 0 60px rgba(255, 154, 158, 0.2),
+                 inset 0 0 15px rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      animation: fadeIn 3s ease-in-out, cardGlow 3s ease-in-out infinite alternate;
+    }
+    
+    @keyframes cardGlow {
+      from {
+        box-shadow: 0 0 30px rgba(255, 255, 255, 0.2), 
+                   0 0 60px rgba(255, 154, 158, 0.2),
+                   inset 0 0 15px rgba(255, 255, 255, 0.1);
+      }
+      to {
+        box-shadow: 0 0 40px rgba(255, 255, 255, 0.3), 
+                   0 0 80px rgba(255, 154, 158, 0.4),
+                   inset 0 0 25px rgba(255, 255, 255, 0.2);
+      }
+    }
+    
+    .card h1 {
+      font-family: 'Dancing Script', cursive;
+      font-size: 2.5em; /* Tamaño ajustado */
+      margin-bottom: 20px;
+      color: #ff9a9e;
+      text-shadow: 0 0 10px rgba(255, 154, 158, 0.7);
+      animation: titlePulse 2s infinite alternate;
+    }
+    
+    @keyframes titlePulse {
+      from {
+        text-shadow: 0 0 10px rgba(255, 154, 158, 0.7);
+      }
+      to {
+        text-shadow: 0 0 20px rgba(255, 154, 158, 0.9);
+      }
+    }
+    
+    .card p {
+      font-size: 1.1em;
+      line-height: 1.8;
+      margin-bottom: 25px;
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+      color: white; /* Asegura que el texto sea blanco contra el fondo oscuro */
+    }
+    
+    .firma {
+      margin-top: 30px;
+      font-family: 'Dancing Script', cursive;
+      font-style: italic;
+      font-size: 1.5em;
+      color: #ffd1dc;
+      text-shadow: 0 0 5px rgba(255, 209, 220, 0.5);
+    }
+    
+    .heart-container {
+      position: fixed; /* Cambiado de fixed a fixed, pero deberá permanecer */
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 2;
+      overflow: hidden; /* Para no crear scroll horizontal */
+    }
+    
+    .heart {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background: linear-gradient(135deg, #ff9a9e, #ff6b81);
+      transform: rotate(45deg);
+      animation: float 4s linear infinite;
+      box-shadow: 0 0 10px rgba(255, 154, 158, 0.7);
+    }
+    
+    .heart::before,
+    .heart::after {
+      content: "";
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background: inherit;
+      border-radius: 50%;
+      box-shadow: inherit;
+    }
+    
+    .heart::before {
+      top: -10px;
+      left: 0;
+    }
+    
+    .heart::after {
+      left: -10px;
+      top: 0;
+    }
+
+    .music-controls {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 10;
+      background: rgba(255, 255, 255, 0.2);
+      padding: 12px;
+      border-radius: 50px;
+      display: flex;
+      align-items: center;
+      backdrop-filter: blur(5px);
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      transition: all 0.3s ease;
+      flex-wrap: wrap; /* Para que en móvil los elementos se acomoden */
+      justify-content: center;
+      max-width: 95%; /* Limitar ancho en móvil */
+    }
+    
+    .music-controls:hover {
+      background: rgba(255, 255, 255, 0.25);
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .music-controls button {
+      background: transparent;
+      border: none;
+      color: white;
+      font-size: 24px;
+      cursor: pointer;
+      margin: 0 5px;
+      transition: transform 0.3s ease;
+      text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+    }
+
+    .music-controls button:hover {
+      transform: scale(1.2);
+    }
+
+    .music-info {
+      margin-left: 10px;
+      font-size: 14px;
+      color: white;
+      font-weight: 300;
+      letter-spacing: 0.5px;
+      white-space: nowrap; /* Evitar saltos de línea */
+      overflow: hidden;
+      text-overflow: ellipsis; /* Para textos largos */
+      max-width: 150px; /* Limitar ancho */
+    }
+    
+    /* Decoraciones adicionales */
+    .sparkle {
+      position: fixed; /* Cambiado de absolute a fixed */
+      width: 3px;
+      height: 3px;
+      border-radius: 50%;
+      background-color: white;
+      box-shadow: 0 0 10px 2px white;
+      opacity: 0;
+      pointer-events: none;
+      animation: twinkle 5s infinite;
+    }
+    
+    @keyframes twinkle {
+      0%, 100% {
+        opacity: 0;
+        transform: scale(0.5);
+      }
+      50% {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+    
+    .ribbon {
+      position: absolute;
+      top: -15px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 150px;
+      height: 30px;
+      background: linear-gradient(45deg, #ff6b81, #ff9a9e);
+      z-index: 2;
+      border-radius: 5px;
+      box-shadow: 0 5px 15px rgba(255, 107, 129, 0.5);
+    }
+    
+    .ribbon:before, .ribbon:after {
+      content: '';
+      position: absolute;
+      width: 30px;
+      height: 50px;
+      background: inherit;
+      z-index: 1;
+    }
+    
+    .ribbon:before {
+      left: -15px;
+      border-radius: 30px 0 0 30px;
+    }
+    
+    .ribbon:after {
+      right: -15px;
+      border-radius: 0 30px 30px 0;
+    }
+    
+    /* Destellos para mejorar el efecto sobre fondo negro */
+    .glitter {
+      position: fixed; /* Cambiado de absolute a fixed */
+      width: 6px;
+      height: 6px;
+      background-color: #fff;
+      border-radius: 50%;
+      opacity: 0;
+      animation: glitter 4s ease infinite;
+      pointer-events: none;
+    }
+    
+    @keyframes glitter {
+      0%, 100% { 
+        opacity: 0;
+        transform: scale(0.1);
+      }
+      50% { 
+        opacity: 0.8;
+        transform: scale(1);
+      }
+    }
+    
+    @keyframes float {
+      0% {
+        transform: translateY(0) scale(1) rotate(45deg);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-100vh) scale(1.5) rotate(45deg);
+        opacity: 0;
+      }
+    }
+    
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    @keyframes growFlower {
+      0% {
+        opacity: 0;
+        transform: scale(0);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1) rotate(0deg);
+      }
+    }
+    
+    @keyframes petalAppear {
+      0% {
+        opacity: 0;
+        transform: scale(0) rotate(0deg);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1) rotate(var(--rotate-angle));
+      }
+    }
+    
+    /* Volume control */
+    .volume-control {
+      margin-left: 10px;
+      display: flex;
+      align-items: center;
+      white-space: nowrap; /* Evitar saltos de línea */
+    }
+    
+    .volume-slider {
+      width: 60px;
+      margin-left: 5px;
+      -webkit-appearance: none;
+      height: 4px;
+      border-radius: 2px;
+      background: rgba(255, 255, 255, 0.5);
+      outline: none;
+    }
+    
+    .volume-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #ffffff;
+      cursor: pointer;
+    }
+
+    /* Estilos para el contenedor de carga del archivo */
+    .file-upload {
+      margin: 20px auto;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 15px;
+      border-radius: 10px;
+      width: 100%;
+      max-width: 350px;
+      box-sizing: border-box; /* Para que el padding no afecte el ancho total */
+    }
+    
+    .file-upload label {
+      display: block;
+      margin-bottom: 10px;
+      color: #ffd1dc;
+      font-weight: bold;
+    }
+    
+    .file-upload input {
+      width: 100%;
+      padding: 8px;
+      background: rgba(255, 255, 255, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 5px;
+      color: white;
+      box-sizing: border-box; /* Para que el padding no afecte el ancho total */
+    }
+    
+    /* Responsive - Ajustes específicos para móviles */
+    @media (max-width: 768px) {
+      .card {
+        padding: 30px 15px;
+        max-width: 92%;
+        margin-top: 10vh;
+      }
+      
+      .card h1 {
+        font-size: 1.8em;
+      }
+      
+      .card p {
+        font-size: 0.9em;
+        line-height: 1.6;
+      }
+      
+      .firma {
+        font-size: 1.2em;
+      }
+      
+      .ribbon {
+        width: 120px;
+      }
+      
+      .music-controls {
+        padding: 8px;
+        bottom: 10px;
+        right: 10px;
+        flex-direction: column; /* Apilar elementos verticalmente en móvil */
+        align-items: center;
+      }
+      
+      .music-info, .volume-control {
+        margin: 5px 0;
+      }
+      
+      /* Asegurándonos que el input de archivo no se desborde */
+      .file-upload {
+        padding: 10px;
+      }
+      
+      .file-upload input {
+        padding: 6px;
+      }
+    }
+    
+    /* Para dispositivos muy pequeños */
+    @media (max-width: 480px) {
+      .card h1 {
+        font-size: 1.6em;
+      }
+      
+      .card p {
+        font-size: 0.85em;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="flower-container" id="flowerContainer"></div>
+  
+  <div class="card">
+    <div class="ribbon"></div>
+    <h1>Feliz Cumpleaños, Dayamara</h1>
+    <p>
+      Hoy no es un día cualquiera, porque nació alguien muy especial para mí.<br>
+      Te deseo que este hermoso día la pases bien con tus seres más queridos.<br>
+      Gracias por existir, por ser tú. Confío en lo que tú quieres lograr. Que este nuevo año de vida<br>
+      te regale momentos hermosos, como los que causas en mí. Un abrazo a distancia. Me apena 
+      haber nacido lejos, aun así te siento cerca.
+    </p>
+    <p class="firma">— Con cariño, José Luis (Señor Pollito)</p>
+    
+    <!-- Contenedor para cargar el archivo MP3 -->
+    <div class="file-upload">
+      <label for="musicUpload">Reproduce cualquier música de tu preferencia</label>
+      <input type="file" id="musicUpload" accept="audio/mp3" onchange="loadUserMusic(this)">
+    </div>
+  </div>
+  
+  <div class="heart-container" id="heartContainer"></div>
+  <div id="starsContainer"></div>
+  <div id="glitterContainer"></div>
+  
+  <!-- Reproductor de audio -->
+  <audio id="backgroundMusic" loop>
+    <source src="" type="audio/mp3" id="audioSource">
+    Tu navegador no soporta audio.
+  </audio>
+  
+  <div class="music-controls">
+    <button onclick="toggleMusic()" id="playPauseBtn">▶️</button>
+    <div class="music-info">Arctic Monkeys - I Wanna Be Yours</div>
+    <div class="volume-control">
+      <button onclick="toggleMute()" id="muteBtn">🔊</button>
+      <input type="range" min="0" max="1" step="0.1" value="0.7" class="volume-slider" id="volumeSlider">
+    </div>
+  </div>
+  
+  <script>
+    // Variables para la música
+    let isPlaying = false;
+    let isMuted = false;
+    const music = document.getElementById('backgroundMusic');
+    const audioSource = document.getElementById('audioSource');
+    
+    // Función para cargar la música subida por el usuario
+    function loadUserMusic(input) {
+      if (input.files && input.files[0]) {
+        const file = input.files[0];
+        const url = URL.createObjectURL(file);
+        audioSource.src = url;
+        music.load();
+        
+        // Una vez cargada, iniciar reproducción
+        music.onloadeddata = function() {
+          playMusic();
+          // Ocultar el contenedor de carga una vez que se ha subido el archivo
+          input.parentElement.style.display = 'none';
+          
+          // Crear corazones y flores automáticamente cuando se carga la música
+          createHearts();
+        };
+        
+        // Actualizar el nombre de la canción en los controles
+        if (file.name) {
+          document.querySelector('.music-info').textContent = file.name.replace('.mp3', '');
+        }
+      }
+    }
+    
+    // Función para reproducir música
+    function playMusic() {
+      music.volume = document.getElementById('volumeSlider').value;
+      music.play().catch(err => {
+        console.log("Error al reproducir: ", err);
+        // En algunos navegadores móviles, la reproducción automática está bloqueada
+        alert("Toca la pantalla y presiona ▶️ para reproducir música");
+      });
+      isPlaying = true;
+      document.getElementById('playPauseBtn').innerText = '⏸️';
+    }
+    
+    // Función para reproducir/pausar la música
+    function toggleMusic() {
+      const btn = document.getElementById('playPauseBtn');
+      if (isPlaying) {
+        music.pause();
+        btn.innerText = '▶️';
+      } else {
+        music.play().catch(err => {
+          console.log("Error al reproducir: ", err);
+        });
+        btn.innerText = '⏸️';
+      }
+      isPlaying = !isPlaying;
+    }
+    
+    // Función para silenciar/activar sonido
+    function toggleMute() {
+      const btn = document.getElementById('muteBtn');
+      if (isMuted) {
+        music.volume = document.getElementById('volumeSlider').value;
+        btn.innerText = '🔊';
+      } else {
+        music.volume = 0;
+        btn.innerText = '🔇';
+      }
+      isMuted = !isMuted;
+    }
+    
+    // Función para controlar el volumen
+    document.getElementById('volumeSlider').addEventListener('input', function() {
+      if (!isMuted) {
+        music.volume = this.value;
+      }
+    });
+    
+    // Crear flores al cargar la página
+    document.addEventListener('DOMContentLoaded', function() {
+      createFlowers();
+      createStars();
+      createGlitter();
+      
+      // Evento de tocar pantalla para móviles
+      document.body.addEventListener('touchstart', function() {
+        if (!isPlaying && audioSource.src) {
+          playMusic();
+        }
+      }, { once: true });
+      
+      // Crear nuevas flores periódicamente
+      setInterval(function() {
+        createRandomFlower();
+      }, 3000);
+      
+      // Crear destellos periódicamente para mejorar efectos sobre fondo negro
+      setInterval(function() {
+        createGlitter();
+      }, 5000);
+      
+      // Crear corazones periódicamente
+      setInterval(function() {
+        if (isPlaying) { // Solo crear corazones si la música está sonando
+          createRandomHeart();
+        }
+      }, 2000);
+      
+      // Corregir errores ortográficos
+      const text = document.querySelector('.card p');
+      text.innerHTML = text.innerHTML.replace('desep', 'deseo');
+      text.innerHTML = text.innerHTML.replace('dia', 'día');
+      text.innerHTML = text.innerHTML.replace('confio', 'confío');
+    });
+    
+    function createStars() {
+      const starsContainer = document.getElementById('starsContainer');
+      for (let i = 0; i < 80; i++) { // Más estrellas para el fondo negro
+        const star = document.createElement('div');
+        star.classList.add('sparkle');
+        star.style.left = Math.random() * 100 + 'vw';
+        star.style.top = Math.random() * 100 + 'vh';
+        star.style.animationDelay = Math.random() * 5 + 's';
+        starsContainer.appendChild(star);
+      }
+    }
+    
+    function createGlitter() {
+      const container = document.getElementById('glitterContainer');
+      const maxGlitter = window.innerWidth < 768 ? 10 : 20; // Menos elementos en móvil
+      
+      for (let i = 0; i < maxGlitter; i++) {
+        setTimeout(() => {
+          const glitter = document.createElement('div');
+          glitter.classList.add('glitter');
+          glitter.style.left = Math.random() * 100 + 'vw';
+          glitter.style.top = Math.random() * 100 + 'vh';
+          glitter.style.animationDelay = Math.random() * 2 + 's';
+          container.appendChild(glitter);
+          
+          setTimeout(() => {
+            glitter.remove();
+          }, 4000);
+        }, i * 100);
+      }
+    }
+    
+    function createFlowers() {
+      // Reducir la cantidad de flores en dispositivos móviles
+      const flowerCount = window.innerWidth < 768 ? 8 : 15;
+      
+      // Crear flores iniciales
+      for (let i = 0; i < flowerCount; i++) {
+        setTimeout(() => {
+          createRandomFlower();
+        }, i * 500); // Crear flores con un retraso para que aparezcan de forma escalonada
+      }
+    }
+    
+    function createRandomFlower() {
+      const container = document.getElementById('flowerContainer');
+      const flower = document.createElement('div');
+      flower.classList.add('flower');
+      
+      // Posición aleatoria
+      const x = Math.random() * window.innerWidth;
+      const y = Math.random() * window.innerHeight;
+      
+      flower.style.left = `${x}px`;
+      flower.style.top = `${y}px`;
+      
+      // Tamaño aleatorio para la flor - más pequeño en móvil
+      const sizeFactor = window.innerWidth < 768 ? 0.7 : 1;
+      const size = (20 + Math.random() * 40) * sizeFactor;
+      flower.style.width = `${size}px`;
+      flower.style.height = `${size}px`;
+      
+      // Color aleatorio para los pétalos - colores más brillantes para el fondo negro
+      const hue = Math.floor(Math.random() * 60) + 300; // Tonos de rosa y púrpura
+      const saturation = Math.floor(Math.random() * 30) + 70; // Más saturación
+      const lightness = Math.floor(Math.random() * 15) + 75; // Más brillante
+      const petalColor = `hsla(${hue}, ${saturation}%, ${lightness}%, 0.8)`; // Más opacidad
+      
+      // Crear el centro de la flor
+      const center = document.createElement('div');
+      center.classList.add('center');
+      center.style.width = `${size * 0.3}px`;
+      center.style.height = `${size * 0.3}px`;
+      center.style.left = `${size * 0.35}px`;
+      center.style.top = `${size * 0.35}px`;
+      center.style.animation = `growFlower 1s ease-out forwards`;
+      
+      flower.appendChild(center);
+      
+      // Crear pétalos
+      const petalCount = 5 + Math.floor(Math.random() * 4); // 5-8 pétalos
+      for (let i = 0; i < petalCount; i++) {
+        const petal = document.createElement('div');
+        petal.classList.add('petal');
+        
+        const angle = (i / petalCount) * 360;
+        petal.style.setProperty('--rotate-angle', `${angle}deg`);
+        
+        petal.style.width = `${size * 0.4}px`;
+        petal.style.height = `${size * 0.6}px`;
+        petal.style.backgroundColor = petalColor;
+        
+        petal.style.left = `${size * 0.3}px`;
+        petal.style.top = `${size * 0.2}px`;
+        petal.style.transformOrigin = `bottom center`;
+        petal.style.transform = `rotate(${angle}deg)`;
+        petal.style.animation = `petalAppear ${0.5 + Math.random() * 1}s ease-out forwards ${i * 0.1}s`;
+        
+        flower.appendChild(petal);
+      }
+      
+      container.appendChild(flower);
+      
+      // Eliminar la flor después de un tiempo aleatorio
+      setTimeout(() => {
+        flower.style.transition = 'opacity 2s';
+        flower.style.opacity = '0';
+        setTimeout(() => flower.remove(), 2000);
+      }, 10000 + Math.random() * 20000);
+    }
+    
+    function createHearts() {
+      // Adaptar cantidad de corazones según el tamaño de pantalla
+      const heartCount = window.innerWidth < 768 ? 25 : 50;
+      
+      for (let i = 0; i < heartCount; i++) {
+        setTimeout(() => {
+          createRandomHeart();
+        }, i * 200);
+      }
+    }
+    
+    function createRandomHeart() {
+      // Asegurarse de que el container existe
+      const container = document.getElementById("heartContainer");
+      if (!container) return;
+      
+      const heart = document.createElement("div");
+      heart.classList.add("heart");
+      heart.style.left = Math.random() * 100 + "vw";
+      heart.style.top = "100vh";
+      heart.style.animationDuration = (2 + Math.random() * 3) + "s";
+      heart.style.opacity = 0.7 + Math.random() * 0.3;
+      
+      // Tamaño adaptado a móvil
+      const scale = window.innerWidth < 768 ? 
+        (0.3 + Math.random() * 0.4) : 
+        (0.5 + Math.random());
+      
+      heart.style.transform = `rotate(45deg) scale(${scale})`;
+      container.appendChild(heart);
+      
+      setTimeout(() => {
+        heart.remove();
+      }, 5000);
+    }
+  </script>
+</body>
+</html>
